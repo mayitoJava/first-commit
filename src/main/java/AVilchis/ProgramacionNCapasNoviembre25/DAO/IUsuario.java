@@ -16,6 +16,6 @@ public interface IUsuario {
     
     public Result AddAll(List<Usuario> usuarios);
     
-   public Result BusquedaUsuarioDireccionGetAll(String nombre, String apellidoPaterno, String apellidoMaterno, String rol);
+     public Result GetAllDinamico(Usuario usuario);
     
 }

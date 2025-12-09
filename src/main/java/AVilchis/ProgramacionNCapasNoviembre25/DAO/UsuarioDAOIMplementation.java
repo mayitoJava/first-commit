@@ -273,78 +273,7 @@ public class UsuarioDAOIMplementation implements IUsuario {
     }
 
     @Override
-    public Result BusquedaUsuarioDireccionGetAll(String nombre, String apellidoPaterno, String apellidoMaterno, String rol) {
-
-        Result resultsearch = new Result();
-
-        try {
-            resultsearch.Correct = jdbcTemplate.execute(
-                    "{CALL BusquedaUsuarioDireccionGetAll(?,?,?,?,?)}",
-                    (CallableStatementCallback<Boolean>) callableStatement -> {
-
-                        // Entradas
-                        callableStatement.setString(1, nombre);
-                        callableStatement.setString(2, apellidoPaterno);
-                        callableStatement.setString(3, apellidoMaterno);
-                        callableStatement.setString(4, rol);
-
-                        // Salida (cursor)
-                        callableStatement.registerOutParameter(5, java.sql.Types.REF_CURSOR);
-
-                        callableStatement.execute();
-
-                        ResultSet resultSet = (ResultSet) callableStatement.getObject(5);
-
-                        resultsearch.Objects = new ArrayList<>();
-
-                        while (resultSet.next()) {
-
-                            Usuario usuario = new Usuario();
-                            usuario.setNombre(resultSet.getString("NombreUsuario"));
-                            usuario.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
-                            usuario.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
-                            usuario.setEmail(resultSet.getString("Email"));
-                            usuario.setTelefono(resultSet.getString("Telefono"));
-                            usuario.setCurp(resultSet.getString("Curp"));
-                            usuario.setUsername(resultSet.getString("Username"));
-                            usuario.setFechaNacimiento(resultSet.getDate("FechaNacimiento"));
-                            usuario.setSexo(resultSet.getString("Sexo"));
-                            usuario.setCelular(resultSet.getString("Celular"));
-
-                            // direcciones
-                            int IdDireccion = resultSet.getInt("IdDireccion");
-                            if (IdDireccion != 0) {
-                                usuario.Direcciones = new ArrayList<>();
-                                Direccion direccion = new Direccion();
-                                direccion.setCalle(resultSet.getString("Calle"));
-                                direccion.setNumeroInterior(resultSet.getString("NumeroInterior"));
-                                direccion.setNumeroExterior(resultSet.getString("NumeroExterior"));
-
-                                Colonia colonia = new Colonia();
-                                colonia.setIdColonia(resultSet.getInt("IdColonia"));
-                                colonia.setNombre(resultSet.getString("NombreColonia"));
-                                colonia.setCodigoPostal(resultSet.getString("CodigoPostal"));
-                                direccion.Colonia = colonia;
-
-                                usuario.Direcciones.add(direccion);
-                            }
-
-                            resultsearch.Objects.add(usuario);
-                        }
-                        return true;
-                    });
-
-        } catch (Exception ex) {
-            resultsearch.Correct = false;
-            resultsearch.ErrorMessage = ex.getLocalizedMessage();
-            resultsearch.ex = ex;
-        }
-
-        return resultsearch;
-    }
-
     @Transactional(rollbackFor = Exception.class)
-    @Override
     public Result AddAll(List<Usuario> usuarios) {
         Result result = new Result();
         try {
@@ -369,6 +298,99 @@ public class UsuarioDAOIMplementation implements IUsuario {
             result.ErrorMessage = ex.getLocalizedMessage();
         }
         return result;
+    }
+
+    @Override
+    public Result GetAllDinamico(Usuario usuario) {
+        Result result = new Result();
+
+        try {
+            result.Correct = jdbcTemplate.execute("{CALL busquedausuariodireccionall(?,?,?,?,?)}", (CallableStatementCallback<Boolean>) callableStatement -> {
+
+                callableStatement.setString(1, usuario.getNombre());
+                callableStatement.setString(2, usuario.getApellidoPaterno());
+                callableStatement.setString(3, usuario.getApellidoMaterno());
+                callableStatement.setInt(4, usuario.Rol.getIdRol());
+                callableStatement.registerOutParameter(5, java.sql.Types.REF_CURSOR);
+                callableStatement.execute();
+
+                ResultSet resultSet = (ResultSet) callableStatement.getObject(5);
+
+                result.Objects = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    int IdUsuarioPorIngresar = resultSet.getInt("IdUsuario"); // truena aqui jaja
+                    if (!result.Objects.isEmpty() && ((Usuario) result.Objects.get(result.Objects.size() - 1)).getIdUsuario() == IdUsuarioPorIngresar) {
+                        Direccion direccion = new Direccion();
+                        direccion.setCalle(resultSet.getString("Calle"));
+                        direccion.setNumeroExterior(resultSet.getString("NumeroExterior"));
+                        direccion.setNumeroInterior(resultSet.getString("NumeroInterior"));
+                        direccion.Colonia = new Colonia();
+                        direccion.Colonia.setIdColonia(resultSet.getInt("IdColonia"));
+                        direccion.Colonia.setNombre(resultSet.getString("NombreColonia"));
+                        direccion.Colonia.setCodigoPostal(resultSet.getString("CodigoPostal"));
+                        direccion.Colonia.Municipio = new Municipio();
+                        direccion.Colonia.Municipio.setIdMunicipio(resultSet.getInt("IdMunicipio"));
+                        direccion.Colonia.Municipio.setNombre(resultSet.getString("NombreMunicipio"));
+                        direccion.Colonia.Municipio.Estado = new Estado();
+                        direccion.Colonia.Municipio.Estado.setIdEstado(resultSet.getInt("IdEstado"));
+                        direccion.Colonia.Municipio.Estado.setNombre(resultSet.getString("NombreEstado"));
+                        direccion.Colonia.Municipio.Estado.Pais = new Pais();
+                        direccion.Colonia.Municipio.Estado.Pais.setIdPais(resultSet.getInt("IdPais"));
+                        direccion.Colonia.Municipio.Estado.Pais.setNombre(resultSet.getString("NombrePais"));
+
+                        Usuario usuarioBusqueda = ((Usuario) result.Objects.get(result.Objects.size() - 1));
+                        usuarioBusqueda.Direcciones.add(direccion);
+                    } else {
+                        Usuario usuarioBusqueda = new Usuario();
+                        usuarioBusqueda.setIdUsuario(IdUsuarioPorIngresar);
+                        usuarioBusqueda.setUsername(resultSet.getString("Username"));
+                        usuarioBusqueda.setNombre(resultSet.getString("NombreUsuario"));
+                        usuarioBusqueda.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
+                        usuarioBusqueda.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
+                        usuarioBusqueda.setEmail(resultSet.getString("Email"));
+                        usuarioBusqueda.setPassword(resultSet.getString("Password"));
+                        usuarioBusqueda.setFechaNacimiento(resultSet.getDate("FechaNacimiento"));
+                        usuarioBusqueda.setSexo(resultSet.getString("Sexo"));
+                        usuarioBusqueda.setTelefono(resultSet.getString("Telefono"));
+                        usuarioBusqueda.setCurp(resultSet.getString("Curp"));
+                        usuarioBusqueda.setCelular(resultSet.getString("Celular"));
+                        int IdDireccion = resultSet.getInt("IdDireccion");
+                        if (IdDireccion != 0) {
+                            usuarioBusqueda.Direcciones = new ArrayList<>();
+                            Direccion direccion = new Direccion();
+                            direccion.setCalle(resultSet.getString("Calle"));
+                            direccion.setNumeroExterior(resultSet.getString("NumeroExterior"));
+                            direccion.setNumeroInterior(resultSet.getString("NumeroInterior"));
+                            direccion.Colonia = new Colonia();
+                            direccion.Colonia.setIdColonia(resultSet.getInt("IdColonia"));
+                            direccion.Colonia.setNombre(resultSet.getString("NombreColonia"));
+                            direccion.Colonia.setCodigoPostal(resultSet.getString("CodigoPostal"));
+                            direccion.Colonia.Municipio = new Municipio();
+                            direccion.Colonia.Municipio.setIdMunicipio(resultSet.getInt("IdMunicipio"));
+                            direccion.Colonia.Municipio.setNombre(resultSet.getString("NombreMunicipio"));
+                            direccion.Colonia.Municipio.Estado = new Estado();
+                            direccion.Colonia.Municipio.Estado.setIdEstado(resultSet.getInt("IdEstado"));
+                            direccion.Colonia.Municipio.Estado.setNombre(resultSet.getString("NombreEstado"));
+                            direccion.Colonia.Municipio.Estado.Pais = new Pais();
+                            direccion.Colonia.Municipio.Estado.Pais.setIdPais(resultSet.getInt("IdPais"));
+                            direccion.Colonia.Municipio.Estado.Pais.setNombre(resultSet.getString("NombrePais"));
+                            usuarioBusqueda.Direcciones.add(direccion);
+                        }
+                        result.Objects.add(usuarioBusqueda);
+                    }
+                }
+                return true;
+            });
+
+        } catch (Exception ex) {
+            result.Correct = false;
+            result.ErrorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+            return result;
+
     }
 
 }

@@ -75,11 +75,11 @@ public class UsuarioController {
 
     @GetMapping // responder a interacciones de usuario
     public String GetAll(Model model) {
-
         Result result = usuarioDAOImplementation.GetAll();
         model.addAttribute("usuarios", result.Objects);
-
-        return "Datos";
+        model.addAttribute("usuarioBusqueda", new Usuario());
+        model.addAttribute("rol", rolDAOImplementation.GetAll().Objects);
+        return "UsuarioIndex";
     }
 
     @GetMapping("form")
@@ -88,8 +88,13 @@ public class UsuarioController {
         model.addAttribute("pais", resultpais.Objects);
         Result result = rolDAOImplementation.GetAll();
         model.addAttribute("rol", result.Objects);
-        model.addAttribute("usuario", new Usuario());
-        return "DatosForm";
+        
+        Usuario usuario = new Usuario();
+        usuario.Direcciones = new ArrayList<>();
+        usuario.Direcciones.add(new Direccion());
+        
+        model.addAttribute("usuario",usuario);
+        return "UsuarioForm";
     }
 
     @PostMapping("add")
@@ -101,14 +106,14 @@ public class UsuarioController {
         } else {
             Result result = usuarioDAOImplementation.Add(usuario);
         }
-        return "Datos";
+        return "UsuarioIndex";
     }
 
     @GetMapping("detail/{IdUsuario}")
     public String Detail(@PathVariable("IdUsuario") int IdUsuario, Model model) {
         Result resulto = usuarioDAOImplementation.GetAllByIdUsuarioDireccion(IdUsuario);
         model.addAttribute("usuario", resulto.Objects);
-        return "DatosEditar";
+        return "UsuarioEditar";
     }
 
     @GetMapping("GetEstadoByPais/{IdPais}")
@@ -146,7 +151,7 @@ public class UsuarioController {
             usuario.Direcciones.get(0).setIdDireccion(-1);
 
             model.addAttribute("usuario", usuario);
-            return "DatosForm";
+            return "UsuarioForm";
         } else if (IdDireccion == 0) { //Aregar direccion
             //Formulario de direccion sin datos
 
@@ -163,7 +168,7 @@ public class UsuarioController {
             }
 
             model.addAttribute("usuario", usuario);
-            return "DatosForm";
+            return "UsuarioForm";
 
         } else {// Editar Direccion
             //Retornar formulario direccion con datos              
@@ -181,24 +186,24 @@ public class UsuarioController {
             model.addAttribute("Paises", paisDAOImplementation.GetAll().Objects);
             model.addAttribute("usuario", usuario);
 
-            return "DatosForm";
+            return "UsuarioForm";
         }
     }
-    
+
     @PostMapping("/formEditable")
-    public String Form(@ModelAttribute Usuario usuario){
-        if(usuario.getIdUsuario() == 0){
+    public String Form(@ModelAttribute Usuario usuario) {
+        if (usuario.getIdUsuario() == 0) {
             //agregar usuario-direccion 
-        } else if (usuario.Direcciones.get(0).getIdDireccion() == -1){
+        } else if (usuario.Direcciones.get(0).getIdDireccion() == -1) {
             //Actualizar usuario
-        } else if (usuario.Direcciones.get(0).getIdDireccion() == 0){
+        } else if (usuario.Direcciones.get(0).getIdDireccion() == 0) {
             //Añadir Direccion
         } else {
             //Actualizr Direccion
         }
         return null;
     }
- 
+
     @GetMapping("CargaMasiva")
     public String CargaMasiva() {
         return "CargaMasiva";
@@ -341,8 +346,17 @@ public class UsuarioController {
         sesion.removeAttribute("archivoCargaMasiva");
         new File(path).delete();
 
-        return "Datos";
+        return "UsuarioIndex";
     }
-    
+
+    @PostMapping("/GetAllDinamico")
+    public String GetAllDinamico(@ModelAttribute Usuario usuario, Model model){
+        
+        model.addAttribute("usuarioBusqueda", new Usuario());
+        model.addAttribute("rol", rolDAOImplementation.GetAll().Objects);
+        model.addAttribute("usuarios", usuarioDAOImplementation.GetAllDinamico(usuario).Objects);
+        
+        return "UsuarioIndex";
+    }
 
 }
