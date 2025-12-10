@@ -31,6 +31,7 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,7 +74,7 @@ public class UsuarioController {
 
     @Autowired
     private ValidationService validatorService;
-    
+
     @Autowired
     private UsuarioJPADAOImplementation usuarioJPADAOImplementation;
 
@@ -93,23 +94,25 @@ public class UsuarioController {
         model.addAttribute("pais", resultpais.Objects);
         Result result = rolDAOImplementation.GetAll();
         model.addAttribute("rol", result.Objects);
-        
+
         Usuario usuario = new Usuario();
         usuario.Direcciones = new ArrayList<>();
         usuario.Direcciones.add(new Direccion());
-        
-        model.addAttribute("usuario",usuario);
+
+        model.addAttribute("usuario", usuario);
         return "UsuarioForm";
     }
 
     @PostMapping("add")
-    public String Add(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) {
-
+    public String Add(@Valid @ModelAttribute("usuario") Usuario usuario,BindingResult bindingResult,Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("usuario", usuario);
-            return "DatosForm";
+            return "UsuarioForm";
         } else {
-            Result result = usuarioDAOImplementation.Add(usuario);
+            ModelMapper modelMapper = new ModelMapper();
+            AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA usuarioJPA = modelMapper.map(usuario, AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA.class);
+            Result resultAdd = usuarioJPADAOImplementation.Add(usuarioJPA);
+            model.addAttribute("resultado", resultAdd);
         }
         return "UsuarioIndex";
     }
@@ -198,7 +201,9 @@ public class UsuarioController {
     @PostMapping("/formEditable")
     public String Form(@ModelAttribute Usuario usuario) {
         if (usuario.getIdUsuario() == 0) {
-            //agregar usuario-direccion 
+            ModelMapper modelMapper = new ModelMapper();
+            AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA usuarioJPA = modelMapper.map(usuario, AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA.class);
+            Result resultadd = usuarioJPADAOImplementation.Add(usuarioJPA);
         } else if (usuario.Direcciones.get(0).getIdDireccion() == -1) {
             //Actualizar usuario
         } else if (usuario.Direcciones.get(0).getIdDireccion() == 0) {
@@ -206,7 +211,7 @@ public class UsuarioController {
         } else {
             //Actualizr Direccion
         }
-        return null;
+        return "redirect:/UsuarioIndex";
     }
 
     @GetMapping("CargaMasiva")
@@ -355,12 +360,12 @@ public class UsuarioController {
     }
 
     @PostMapping("/GetAllDinamico")
-    public String GetAllDinamico(@ModelAttribute Usuario usuario, Model model){
-        
+    public String GetAllDinamico(@ModelAttribute Usuario usuario, Model model) {
+
         model.addAttribute("usuarioBusqueda", new Usuario());
         model.addAttribute("rol", rolDAOImplementation.GetAll().Objects);
         model.addAttribute("usuarios", usuarioDAOImplementation.GetAllDinamico(usuario).Objects);
-        
+
         return "UsuarioIndex";
     }
 

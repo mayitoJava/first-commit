@@ -4,6 +4,7 @@ import AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -41,6 +42,22 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA{
             Mapper
          */
 
+        return result;
+    }
+    
+    @Transactional
+    @Override
+    public Result Add(usuarioJPA usuario){
+        Result result = new Result();
+        
+        try{
+            entityManager.persist(usuario);
+        }catch (Exception ex){
+            result.Correct = false;
+            result.ErrorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+        
         return result;
     }
 }

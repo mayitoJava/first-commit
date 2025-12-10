@@ -37,7 +37,7 @@ public class Usuario {
     private String Password;
 
     @NotNull(message = "Campo requerido")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date FechaNacimiento;
 
     @NotNull(message = "Campo requerido")
