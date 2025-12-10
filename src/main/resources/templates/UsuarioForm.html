@@ -102,63 +102,85 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="Celular" placeholder="Celular" th:field="*{Celular}">
+                            <label for="Celular"><i class="bi bi-emoji-grin-fill"></i> Celular</label>
+                        </div>
+                    </div>
+                    
+                     <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="Telefono" placeholder="Telefono" th:field="*{Telefono}">
+                            <label for="Telefono"><i class="bi bi-emoji-grin-fill"></i> Telefono</label>
+                        </div>
+                    </div>
+                    
+                     <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="Curp" placeholder="Curp" th:field="*{Curp}">
+                            <label for="Curp"><i class="bi bi-emoji-grin-fill"></i> Curp</label>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
 
-                <div class="row g-3" th:if="${(usuario.IdUsuario == 0 && usuario.Direcciones[0].IdDireccion == 0) 
-                     || (usuario.IdUsuario != 0 && usuario.Direcciones[0].IdDireccion > 0) 
-                     || (usuario.IdUsuario != 0 && usuario.Direcciones[0].IdDireccion == 0)}">
-                    <h4 class="mt-4 mb-3 text-primary"><i class="bi bi-house-door-fill"></i> Dirección</h4>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" placeholder="Calle" th:field="*{Direcciones[0].Calle}">
-                            <label>Calle</label>
-                        </div>
+            <div class="row g-3" th:if="${(usuario.IdUsuario == 0 && usuario.Direcciones[0].IdDireccion == 0) 
+                 || (usuario.IdUsuario != 0 && usuario.Direcciones[0].IdDireccion > 0) 
+                 || (usuario.IdUsuario != 0 && usuario.Direcciones[0].IdDireccion == 0)}">
+                <h4 class="mt-4 mb-3 text-primary"><i class="bi bi-house-door-fill"></i> Dirección</h4>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="Calle" th:field="*{Direcciones[0].Calle}">
+                        <label>Calle</label>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" placeholder="Número Exterior" th:field="*{Direcciones[0].NumeroExterior}">
-                            <label>Número Exterior</label>
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="Número Exterior" th:field="*{Direcciones[0].NumeroExterior}">
+                        <label>Número Exterior</label>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" placeholder="Número Interior" th:field="*{Direcciones[0].NumeroInterior}">
-                            <label>Número Interior</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">País</label>
-                        <select id="ddlPais" class="form-select">
-                            <option value="0">Selecciona un País</option>
-                            <option th:each="pais: ${pais}" th:text="${pais.Nombre}" th:value="${pais.IdPais}"></option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Estado</label>
-                        <select id="ddlEstado" class="form-select">
-                            <option value="0">Selecciona un Estado</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Municipio</label>
-                        <select id="ddlMunicipio" class="form-select">
-                            <option value="0">Selecciona un Municipio</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Colonia</label>
-                        <select id="ddlColonia" class="form-select">
-                            <option value="0">Selecciona una Colonia</option>
-                        </select>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="Número Interior" th:field="*{Direcciones[0].NumeroInterior}">
+                        <label>Número Interior</label>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-floppy-fill"></i> Guardar</button>
+                <div class="col-md-3">
+                    <label class="form-label">País</label>
+                    <select id="ddlPais" class="form-select">
+                        <option value="0">Selecciona un País</option>
+                        <option th:each="pais: ${pais}" th:text="${pais.Nombre}" th:value="${pais.IdPais}"></option>
+                    </select>
                 </div>
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <select id="ddlEstado" class="form-select" th:field="*{Direcciones[0].Estado.IdEstado}">
+                        <option value="0">Selecciona un Estado</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Municipio</label>
+                    <select id="ddlMunicipio" class="form-select" th:field="*{Direcciones[0].Municipio.IdMunicipio}">
+                        <option value="0">Selecciona un Municipio</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Colonia</label>
+                    <select id="ddlColonia" class="form-select" th:field="*{Direcciones[0].Colonia.IdColonia}">
+                        <option value="0">Selecciona una Colonia</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-floppy-fill"></i> Guardar</button>
+            </div>
         </form>
 
 

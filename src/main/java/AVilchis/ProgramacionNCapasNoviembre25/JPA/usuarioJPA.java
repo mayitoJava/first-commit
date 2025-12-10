@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class usuarioJPA {
     @Column(name = "telefono")
     private String Telefono;
     @Column(name = "fechanacimiento")
-    private String FechaNacimiento;
+    private Date FechaNacimiento;
     @Column(name = "username")
     private String Username;
     @Column(name = "sexo")
@@ -88,13 +89,15 @@ public class usuarioJPA {
         this.Telefono = Telefono;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return FechaNacimiento;
     }
 
-    public void setFechaNacimiento(String FechaNacimiento) {
+    public void setFechaNacimiento(Date FechaNacimiento) {
         this.FechaNacimiento = FechaNacimiento;
     }
+
+    
 
     public String getUsername() {
         return Username;
