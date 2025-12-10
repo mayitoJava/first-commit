@@ -211,7 +211,7 @@ public class UsuarioController {
         } else {
             //Actualizr Direccion
         }
-        return "redirect:/UsuarioIndex";
+        return "redirect:/usuario";
     }
 
     @GetMapping("CargaMasiva")

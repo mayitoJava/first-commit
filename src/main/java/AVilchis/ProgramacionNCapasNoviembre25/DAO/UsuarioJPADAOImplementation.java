@@ -52,6 +52,9 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA{
         
         try{
             entityManager.persist(usuario);
+            usuario.Direcciones.get(0).usuario = new usuarioJPA();
+            usuario.Direcciones.get(0).usuario.setIdUsuario(usuario.getIdUsuario());
+            entityManager.persist(usuario.Direcciones.get(0));
         }catch (Exception ex){
             result.Correct = false;
             result.ErrorMessage = ex.getLocalizedMessage();
