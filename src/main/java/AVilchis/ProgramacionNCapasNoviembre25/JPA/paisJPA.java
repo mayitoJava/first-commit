@@ -16,20 +16,22 @@ public class paisJPA {
     private int IdPais;
     @Column(name = "nombre")
     private String Nombre;
-    
-    public int getIdPais(){
+
+    public int getIdPais() {
         return IdPais;
     }
-    
-    public void setIdPais(int IdPais){
+
+    public void setIdPais(int IdPais) {
         this.IdPais = IdPais;
     }
-    
-    public String getNombre(){
+
+    public String getNombre() {
         return Nombre;
     }
-    
-    public void setNombre(String Nombre){
+
+    public void setNombre(String Nombre) {
         this.Nombre = Nombre;
     }
+    
+    
 }

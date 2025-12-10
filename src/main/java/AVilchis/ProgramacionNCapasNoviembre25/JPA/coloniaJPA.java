@@ -24,28 +24,28 @@ public class coloniaJPA {
     @ManyToOne
     @JoinColumn(name = "idmunicipio")
     public municipioJPA Municipio;
-    
-    public int getIdColonia(){
+
+    public int getIdColonia() {
         return IdColonia;
     }
-    
-    public void setIdColonia(int IdColonia){
+
+    public void setIdColonia(int IdColonia) {
         this.IdColonia = IdColonia;
     }
-    
-    public String getNombre(){
+
+    public String getNombre() {
         return Nombre;
     }
-    
-    public void setNombre(String Nombre){
+
+    public void setNombre(String Nombre) {
         this.Nombre = Nombre;
     }
-    
-    public String getCodigoPostal(){
+
+    public String getCodigoPostal() {
         return CodigoPostal;
     }
-    
-    public void setCodigoPostal(String CodigoPostal){
+
+    public void setCodigoPostal(String CodigoPostal) {
         this.CodigoPostal = CodigoPostal;
     }
 
@@ -56,4 +56,5 @@ public class coloniaJPA {
     public void setMunicipio(municipioJPA Municipio) {
         this.Municipio = Municipio;
     }
+    
 }

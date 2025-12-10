@@ -26,6 +26,41 @@ public class direccionJPA {
     @ManyToOne
     @JoinColumn(name = "idusuario")
     public usuarioJPA usuario;
+    @ManyToOne
+    @JoinColumn(name = "idcolonia")
+    public coloniaJPA Colonia;
+
+    public int getIdDireccion() {
+        return IdDireccion;
+    }
+
+    public void setIdDireccion(int IdDireccion) {
+        this.IdDireccion = IdDireccion;
+    }
+
+    public String getCalle() {
+        return Calle;
+    }
+
+    public void setCalle(String Calle) {
+        this.Calle = Calle;
+    }
+
+    public String getNumeroInterior() {
+        return NumeroInterior;
+    }
+
+    public void setNumeroInterior(String NumeroInterior) {
+        this.NumeroInterior = NumeroInterior;
+    }
+
+    public String getNumeroExterior() {
+        return NumeroExterior;
+    }
+
+    public void setNumeroExterior(String NumeroExterior) {
+        this.NumeroExterior = NumeroExterior;
+    }
 
     public usuarioJPA getUsuario() {
         return usuario;
@@ -42,40 +77,7 @@ public class direccionJPA {
     public void setColonia(coloniaJPA Colonia) {
         this.Colonia = Colonia;
     }
-    @ManyToOne
-    @JoinColumn(name = "idcolonia")
-    public coloniaJPA Colonia;
  
-    public int getIdDireccion() {
-        return IdDireccion;
-    }
- 
-    public void setIdDireccion(int IdDireccion) {
-        this.IdDireccion = IdDireccion;
-    }
- 
-    public String getCalle() {
-        return Calle;
-    }
- 
-    public void setCalle(String Calle) {
-        this.Calle = Calle;
-    }
- 
-    public String getNumeroInterior() {
-        return NumeroInterior;
-    }
- 
-    public void setNumeroInterior(String NumeroInterior) {
-        this.NumeroInterior = NumeroInterior;
-    }
- 
-    public String getNumeroExterior() {
-        return NumeroExterior;
-    }
- 
-    public void setNumeroExterior(String NumeroExterior) {
-        this.NumeroExterior = NumeroExterior;
-    }
+    
 
 }

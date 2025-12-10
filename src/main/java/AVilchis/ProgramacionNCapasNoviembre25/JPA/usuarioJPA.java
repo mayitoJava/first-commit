@@ -47,67 +47,67 @@ public class usuarioJPA {
     public rolJPA Rol;
     @OneToMany(mappedBy = "usuario",cascade=CascadeType.ALL,orphanRemoval = true)
     public List<direccionJPA> Direcciones = new ArrayList<>();
-          
+
     public int getIdUsuario() {
         return IdUsuario;
     }
- 
+
     public void setIdUsuario(int IdUsuario) {
         this.IdUsuario = IdUsuario;
     }
- 
+
     public String getNombre() {
         return Nombre;
     }
- 
+
     public void setNombre(String Nombre) {
         this.Nombre = Nombre;
     }
- 
+
     public String getApellidoPaterno() {
         return ApellidoPaterno;
     }
- 
+
     public void setApellidoPaterno(String ApellidoPaterno) {
         this.ApellidoPaterno = ApellidoPaterno;
     }
- 
+
     public String getApellidoMaterno() {
         return ApellidoMaterno;
     }
- 
+
     public void setApellidoMaterno(String ApellidoMaterno) {
         this.ApellidoMaterno = ApellidoMaterno;
     }
- 
+
     public String getTelefono() {
         return Telefono;
     }
- 
+
     public void setTelefono(String Telefono) {
         this.Telefono = Telefono;
     }
- 
-    public String getFechanacimiento() {
+
+    public String getFechaNacimiento() {
         return FechaNacimiento;
     }
- 
-    public void setFechanacimiento(String FechaNacimiento) {
+
+    public void setFechaNacimiento(String FechaNacimiento) {
         this.FechaNacimiento = FechaNacimiento;
     }
- 
+
     public String getUsername() {
         return Username;
     }
- 
-    public void setUsername(String username) {
-        this.Username = username;
+
+    public void setUsername(String Username) {
+        this.Username = Username;
     }
- 
+
     public String getSexo() {
         return Sexo;
     }
- 
+
     public void setSexo(String Sexo) {
         this.Sexo = Sexo;
     }
@@ -119,27 +119,27 @@ public class usuarioJPA {
     public void setEmail(String Email) {
         this.Email = Email;
     }
- 
+
     public String getCelular() {
         return Celular;
     }
- 
+
     public void setCelular(String Celular) {
         this.Celular = Celular;
     }
- 
+
     public String getCurp() {
         return Curp;
     }
- 
+
     public void setCurp(String Curp) {
         this.Curp = Curp;
     }
- 
+
     public String getPassword() {
         return password;
     }
- 
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -159,7 +159,7 @@ public class usuarioJPA {
     public void setDirecciones(List<direccionJPA> Direcciones) {
         this.Direcciones = Direcciones;
     }
- 
+          
     
     
 }

@@ -18,6 +18,25 @@ public class municipioJPA {
     private int IdMunicipio;
     @Column(name = "nombre")
     private String Nombre;
+    @ManyToOne
+    @JoinColumn(name = "idestado")
+    public estadoJPA Estado;
+
+    public int getIdMunicipio() {
+        return IdMunicipio;
+    }
+
+    public void setIdMunicipio(int IdMunicipio) {
+        this.IdMunicipio = IdMunicipio;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
 
     public estadoJPA getEstado() {
         return Estado;
@@ -26,23 +45,7 @@ public class municipioJPA {
     public void setEstado(estadoJPA Estado) {
         this.Estado = Estado;
     }
-    @ManyToOne
-    @JoinColumn(name = "idestado")
-    public estadoJPA Estado;
     
-    public int getIdMunicipio(){
-        return IdMunicipio;
-    }
     
-    public void setIdMunicipio(int IdMunicipio){
-        this.IdMunicipio = IdMunicipio;
-    }
-    
-    public String getNombre(){
-        return Nombre;
-    }
-    
-    public void setNombre(String Nombre){
-        this.Nombre = Nombre;
-    }
+
 }

@@ -32,6 +32,8 @@ public class rolJPA {
 
     public void setNombre(String Nombre) {
         this.Nombre = Nombre;
-    }   
+    }
+
+    
     
 }
