@@ -41,7 +41,13 @@ public class Direccion {
         this.NumeroExterior = NumeroExterior;
     }
 
-    public void setColonia(Colonia colonia) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Colonia getColonia() {
+        return Colonia;
     }
+
+    public void setColonia(Colonia Colonia) {
+        this.Colonia = Colonia;
+    }
+
+    
 }

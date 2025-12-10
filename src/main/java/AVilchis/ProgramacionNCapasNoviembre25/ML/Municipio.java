@@ -21,7 +21,13 @@ public class Municipio {
         this.Nombre = Nombre;
     }
 
-    public void setEstado(Estado estado) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Estado getEstado() {
+        return Estado;
     }
+
+    public void setEstado(Estado Estado) {
+        this.Estado = Estado;
+    }
+
+    
 }

@@ -30,8 +30,13 @@ public class Colonia {
         this.CodigoPostal = CodigoPostal;
     }
 
-    public void setMunicipio(Municipio municipio) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Municipio getMunicipio() {
+        return Municipio;
     }
+
+    public void setMunicipio(Municipio Municipio) {
+        this.Municipio = Municipio;
+    }
+
     
 }

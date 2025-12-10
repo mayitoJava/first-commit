@@ -7,6 +7,7 @@ import AVilchis.ProgramacionNCapasNoviembre25.DAO.MunicipioDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.UsuarioDAOIMplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.RolDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.PaisDAOImplementation;
+import AVilchis.ProgramacionNCapasNoviembre25.DAO.UsuarioJPADAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.Direccion;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.ErrorCarga;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.Result;
@@ -72,10 +73,14 @@ public class UsuarioController {
 
     @Autowired
     private ValidationService validatorService;
+    
+    @Autowired
+    private UsuarioJPADAOImplementation usuarioJPADAOImplementation;
 
     @GetMapping // responder a interacciones de usuario
     public String GetAll(Model model) {
-        Result result = usuarioDAOImplementation.GetAll();
+        //Result result = usuarioDAOImplementation.GetAll();
+        Result result = usuarioJPADAOImplementation.GetAll();
         model.addAttribute("usuarios", result.Objects);
         model.addAttribute("usuarioBusqueda", new Usuario());
         model.addAttribute("rol", rolDAOImplementation.GetAll().Objects);

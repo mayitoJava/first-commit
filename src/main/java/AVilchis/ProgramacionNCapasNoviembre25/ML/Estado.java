@@ -21,8 +21,14 @@ public class Estado {
         this.Nombre = Nombre;
     }
 
-    public void setPais(Pais pais) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Pais getPais() {
+        return Pais;
     }
+
+    public void setPais(Pais Pais) {
+        this.Pais = Pais;
+    }
+
+    
     
 }
