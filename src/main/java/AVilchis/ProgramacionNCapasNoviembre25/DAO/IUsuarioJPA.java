@@ -7,4 +7,6 @@ public interface IUsuarioJPA {
     public Result GetAll();
     
     public Result Add(usuarioJPA usuario);
+    
+    public Result Update(AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario usuario);
 }

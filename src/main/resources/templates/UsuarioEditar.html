@@ -53,6 +53,16 @@
                             <strong>Celular:</strong> <span th:text="${usuario.Celular}"></span><br/>
                         </label>
                     </div>
+                    <div>
+                        <label class="form-label">
+                            <strong>Sexo:</strong> <span th:text="${usuario.Sexo}"></span><br/>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-label">
+                            <strong>Password:</strong> <span th:text="${usuario.Password}"></span><br/>
+                        </label>
+                    </div>
                     <div class="card-body">
                         <a class="btn btn-primary mb-3 w-100" th:href="@{/usuario/formEditable?IdUsuario=}+${usuario.IdUsuario}">
                             <i class="bi bi-plus-circle" ></i> Editar Datos Personales

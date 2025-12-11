@@ -84,7 +84,7 @@
                 <!-- Password -->
                 <div class="col-md-3">
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="Password" placeholder="Password"
+                        <input type="text" class="form-control" id="Password" placeholder="Password"
                                th:field="${usuario.Password}" onblur="validarPassword(event, this)">
                         <label for="Password"><i class="bi bi-key"></i> Password</label>
                         <div class="text-danger mt-1" th:if="${#fields.hasErrors('Password')}" 
@@ -145,13 +145,12 @@
                     <div class="d-flex gap-4 mt-1">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino"
-                                   th:field="${usuario.sexo}" value="M">
+                                   th:field="${usuario.sexo}" value="M " >
                             <label class="form-check-label" for="sexoMasculino">Masculino</label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino"
-                                   th:field="${usuario.sexo}" value="F">
+                            <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino" th:field="${usuario.sexo}" value="F ">
                             <label class="form-check-label" for="sexoFemenino">Femenino</label>
                         </div>
                     </div>

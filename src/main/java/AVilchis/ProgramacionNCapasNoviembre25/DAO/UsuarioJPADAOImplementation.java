@@ -12,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UsuarioJPADAOImplementation implements IUsuarioJPA{
-    
-   @Autowired
+public class UsuarioJPADAOImplementation implements IUsuarioJPA {
+
+    @Autowired
     private EntityManager entityManager;
 
 //    @Autowired
 //    private ModelMapper modelMapper;
-            
     @Override
     public Result GetAll() {
         //JPQL - para consulta de datos 
@@ -29,38 +28,69 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA{
         Result result = new Result();
 
         ModelMapper modelMapper = new ModelMapper();
-    
+
         result.Objects = new ArrayList<>();
         for (usuarioJPA usuario : usuarios) {
-            
+
             AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario usuarioML = modelMapper.map(usuario, AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario.class);
 
             result.Objects.add(usuarioML);
         }
-        /*
-            Lista UsuarioJPA - List UsuarioML
-            Mapper
-         */
 
         return result;
     }
-    
+
     @Transactional
     @Override
-    public Result Add(usuarioJPA usuario){
+    public Result Add(usuarioJPA usuario) {
         Result result = new Result();
-        
-        try{
+
+        try {
             entityManager.persist(usuario);
             usuario.Direcciones.get(0).usuario = new usuarioJPA();
             usuario.Direcciones.get(0).usuario.setIdUsuario(usuario.getIdUsuario());
             entityManager.persist(usuario.Direcciones.get(0));
-        }catch (Exception ex){
+            
+            result.Correct = true;
+        } catch (Exception ex) {
             result.Correct = false;
             result.ErrorMessage = ex.getLocalizedMessage();
             result.ex = ex;
         }
-        
+
         return result;
     }
+
+    @Transactional
+    @Override
+    public Result Update(AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario usuario) {
+        Result result = new Result();
+        try {
+            // Verificar si existe en la base de datos
+            usuarioJPA usuarioDb = entityManager.find(usuarioJPA.class, usuario.getIdUsuario());
+
+            if (usuarioDb == null) {
+                ModelMapper modelMapper = new ModelMapper();
+                usuarioJPA usuarioJPA = modelMapper.map(usuario, usuarioJPA.class);
+                // Copiar direcciones si es necesario
+                usuarioJPA.Direcciones = usuarioDb.Direcciones;
+                
+                //actualizas usuariojpa
+            } else {
+                ModelMapper modelMapper = new ModelMapper();
+                modelMapper.map(usuario, usuarioDb);
+            }
+            // Hacer merge
+            entityManager.merge(usuarioDb);
+            
+            result.Correct = true;
+            
+        } catch (Exception ex) {
+            result.Correct = false;
+            result.ErrorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+        return result;
+    }
+
 }
