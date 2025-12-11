@@ -23,6 +23,9 @@
         <form method="post" th:object="${usuario}" th:action="@{/usuario/formEditable}" class="p-4 border rounded shadow-sm bg-light">
             <h4 class="mb-4 text-primary"><i class="bi bi-person-square"></i> Datos del Usuario</h4>
 
+            <input type="hidden" th:field="*{IdUsuario}">
+            <input type="hidden" th:field="*{Direcciones[0].IdDireccion}">
+            
             <div class="row g-3"
                  th:if="${(usuario.IdUsuario == 0 && usuario.Direcciones[0].IdDireccion == 0) 
                  || (usuario.IdUsuario != 0 && usuario.Direcciones[0].IdDireccion == -1)}">

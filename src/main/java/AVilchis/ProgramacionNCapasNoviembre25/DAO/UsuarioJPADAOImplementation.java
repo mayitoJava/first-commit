@@ -69,19 +69,15 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
             // Verificar si existe en la base de datos
             usuarioJPA usuarioDb = entityManager.find(usuarioJPA.class, usuario.getIdUsuario());
 
-            if (usuarioDb == null) {
+            if (usuarioDb != null) {
                 ModelMapper modelMapper = new ModelMapper();
                 usuarioJPA usuarioJPA = modelMapper.map(usuario, usuarioJPA.class);
                 // Copiar direcciones si es necesario
                 usuarioJPA.Direcciones = usuarioDb.Direcciones;
                 
                 //actualizas usuariojpa
-            } else {
-                ModelMapper modelMapper = new ModelMapper();
-                modelMapper.map(usuario, usuarioDb);
-            }
-            // Hacer merge
-            entityManager.merge(usuarioDb);
+                 entityManager.merge(usuarioJPA);
+            } 
             
             result.Correct = true;
             

@@ -207,7 +207,7 @@ public class UsuarioController {
             Result resultadd = usuarioJPADAOImplementation.Add(usuarioJPA);
         } else if (usuario.Direcciones.get(0).getIdDireccion() == -1) {
             //Actualizar usuario
-            
+            Result resultupdate = usuarioJPADAOImplementation.Update(usuario);
         } else if (usuario.Direcciones.get(0).getIdDireccion() == 0) {
             //Añadir Direccion
         } else {
