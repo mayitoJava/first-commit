@@ -162,7 +162,5 @@ public class usuarioJPA {
     public void setDirecciones(List<direccionJPA> Direcciones) {
         this.Direcciones = Direcciones;
     }
-          
-    
     
 }

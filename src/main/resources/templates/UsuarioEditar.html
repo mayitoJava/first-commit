@@ -67,7 +67,7 @@
                         <a class="btn btn-primary mb-3 w-100" th:href="@{/usuario/formEditable?IdUsuario=}+${usuario.IdUsuario}">
                             <i class="bi bi-plus-circle" ></i> Editar Datos Personales
                         </a>
-                    </div>                  
+                    </div>       
                 </div>
             </div>
             <div class="col-md-6">
@@ -76,7 +76,7 @@
                         Direcciones
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-secondary mb-3 w-100">
+                        <button class="btn btn-secondary mb-3 w-100" th:href="@{/usuario/formularioEditable?IdUsuario=}+ ${usuario.IdUsuario}+'&IdDireccion=0'">
                             <i class="bi bi-plus-circle"></i> Agregar dirección
                         </button>
                         <div id="listaDirecciones">
@@ -101,6 +101,250 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalUsuario">
+            Editar Usuario
+        </button>
+        <button type="button" class="btn btn-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalDireccion">
+            Agregar Editar dirección
+        </button>
+        <div class="modal fade" id="modalDireccion" tabindex="-1"
+             aria-labelledby="modalDireccionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+
+                    <!-- Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDireccionLabel">
+                            Dirección
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <div class="row g-3">
+
+                            <!-- Calle -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                    <label for="Calle">Calle</label>
+                                </div>
+                            </div>
+
+                            <!-- Número Exterior -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="NumeroExterior" placeholder="No. Exterior">
+                                    <label for="NumeroExterior">Número Exterior</label>
+                                </div>
+                            </div>
+
+                            <!-- Número Interior -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="NumeroInterior" placeholder="No. Interior">
+                                    <label for="NumeroInterior">Número Interior</label>
+                                </div>
+                            </div>
+
+                            <!-- País -->
+                            <div class="col-md-4">
+                                <label for="Pais" class="form-label">País</label>
+                                <select class="form-select" id="Pais">
+                                    <option selected>Selecciona un país</option>
+                                </select>
+                            </div>
+
+                            <!-- Estado -->
+                            <div class="col-md-4">
+                                <label for="Estado" class="form-label">Estado</label>
+                                <select class="form-select" id="Estado">
+                                    <option selected>Selecciona un estado</option>
+                                </select>
+                            </div>
+
+                            <!-- Municipio -->
+                            <div class="col-md-4">
+                                <label for="Municipio" class="form-label">Municipio</label>
+                                <select class="form-select" id="Municipio">
+                                    <option selected>Selecciona un municipio</option>
+                                </select>
+                            </div>
+
+                            <!-- Colonia -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Colonia" placeholder="Colonia">
+                                    <label for="Colonia">Colonia</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cerrar
+                        </button>
+                        <button type="button" class="btn btn-success">
+                            Guardar dirección
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalUsuario" tabindex="-1"
+             aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+
+                    <!-- Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalUsuarioLabel">
+                            Datos del Usuario
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <div class="row g-3">
+
+                            <!-- Nombre -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="NombreUsuario" placeholder="Nombre">
+                                    <label for="NombreUsuario">Nombre</label>
+                                </div>
+                            </div>
+
+                            <!-- Apellido Paterno -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="ApellidoPaterno" placeholder="Apellido Paterno">
+                                    <label for="ApellidoPaterno">Apellido Paterno</label>
+                                </div>
+                            </div>
+
+                            <!-- Apellido Materno -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="ApellidoMaterno" placeholder="Apellido Materno">
+                                    <label for="ApellidoMaterno">Apellido Materno</label>
+                                </div>
+                            </div>
+
+                            <!-- Username -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Username" placeholder="Username">
+                                    <label for="Username">Username</label>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="Email" placeholder="Email">
+                                    <label for="Email">Email</label>
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="Password" placeholder="Password">
+                                    <label for="Password">Password</label>
+                                </div>
+                            </div>
+
+                            <!-- Fecha Nacimiento -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="FechaNacimiento">
+                                    <label for="FechaNacimiento">Fecha Nacimiento</label>
+                                </div>
+                            </div>
+
+                            <!-- Celular -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Celular" placeholder="Celular">
+                                    <label for="Celular">Celular</label>
+                                </div>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Telefono" placeholder="Teléfono">
+                                    <label for="Telefono">Teléfono</label>
+                                </div>
+                            </div>
+
+                            <!-- CURP -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Curp" placeholder="CURP">
+                                    <label for="Curp">CURP</label>
+                                </div>
+                            </div>
+
+                            <!-- Rol -->
+                            <div class="col-md-4">
+                                <label for="RolUsuario" class="form-label">Rol</label>
+                                <select class="form-select" id="RolUsuario">
+                                    <option selected>Selecciona un rol</option>
+                                </select>
+                            </div>
+
+                            <!-- Sexo -->
+                            <div class="col-md-4">
+                                <label class="form-label">Sexo</label>
+                                <div class="d-flex gap-4 mt-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino">
+                                        <label class="form-check-label" for="sexoMasculino">
+                                            Masculino
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino">
+                                        <label class="form-check-label" for="sexoFemenino">
+                                            Femenino
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cerrar
+                        </button>
+                        <button type="button" class="btn btn-success">
+                            Guardar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
 
     </body>
 </html>

@@ -170,6 +170,5 @@ public class Usuario {
     public void setRol(Rol Rol) {
         this.Rol = Rol;
     }
-
     
 }
