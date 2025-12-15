@@ -2,6 +2,7 @@ package AVilchis.ProgramacionNCapasNoviembre25.Controller;
 
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.ColoniaDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.DireccionDAOImplementation;
+import AVilchis.ProgramacionNCapasNoviembre25.DAO.DireccionJPADAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.EstadoDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.MunicipioDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.UsuarioDAOIMplementation;
@@ -71,6 +72,9 @@ public class UsuarioController {
 
     @Autowired
     private DireccionDAOImplementation direccionDAOImplementation;
+    
+    @Autowired
+    private DireccionJPADAOImplementation direccionJPADAOImplementation;
 
     @Autowired
     private ValidationService validatorService;
@@ -369,6 +373,15 @@ public class UsuarioController {
         model.addAttribute("usuarios", usuarioDAOImplementation.GetAllDinamico(usuario).Objects);
 
         return "UsuarioIndex";
+    }
+    
+    @GetMapping("/GetByIdDireccion/{IdDireccion}")
+    @ResponseBody
+    public Result GetByIdDireccion(@PathVariable int IdDireccion){
+        
+        Result result = direccionJPADAOImplementation.GetById(IdDireccion);
+        
+        return result;
     }
 
 }

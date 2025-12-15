@@ -64,8 +64,11 @@
                         </label>
                     </div>
                     <div class="card-body">
-                        <a class="btn btn-primary mb-3 w-100" th:href="@{/usuario/formEditable?IdUsuario=}+${usuario.IdUsuario}">
-                            <i class="bi bi-plus-circle" ></i> Editar Datos Personales
+                        <a class="btn btn-primary mb-3 w-100"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modalUsuario"
+                           >
+                            <i class="bi bi-plus-circle"></i> Editar Datos Personales
                         </a>
                     </div>       
                 </div>
@@ -74,11 +77,15 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-dark text-white">
                         Direcciones
-                    </div>
-                    <div class="card-body">
-                        <button class="btn btn-secondary mb-3 w-100" th:href="@{/usuario/formularioEditable?IdUsuario=}+ ${usuario.IdUsuario}+'&IdDireccion=0'">
-                            <i class="bi bi-plus-circle"></i> Agregar dirección
+                    </div>                  
+                    <div class="card-body"> 
+                        <button type="button" class="btn btn-secondary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalDireccion">
+                            <i class="bi bi-geo-alt-fill me-1"></i> Agregar dirección
                         </button>
+                        </br>
+                        </br>
                         <div id="listaDirecciones">
                             <div class="card p-3 mb-3 shadow-sm"
                                  th:each="direccion : ${usuario.direcciones}">
@@ -87,9 +94,12 @@
                                         <p><strong>Calle:</strong> <span th:text="${direccion.calle}"></span></p>                              
                                     </div>
                                     <div>
-                                        <a class="btn btn-warning btn-sm me-2" th:href="@{/usuario/formEditable?IdUsuario=}+${usuario.IdUsuario}+'&IdDireccion='+${direccion.IdDireccion}">
+                                        <a class="btn btn-warning btn-sm me-2"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#modalDireccion" th:onclick="|ShowModalDireccionEdit(${direccion.IdDireccion})|">
                                             <i class="bi bi-pencil-square"></i> Editar
                                         </a>
+
                                         <a class="btn btn-danger btn-sm">
                                             <i class="bi bi-trash"></i> Borrar
                                         </a>
@@ -101,16 +111,6 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#modalUsuario">
-            Editar Usuario
-        </button>
-        <button type="button" class="btn btn-secondary"
-                data-bs-toggle="modal"
-                data-bs-target="#modalDireccion">
-            Agregar Editar dirección
-        </button>
         <div class="modal fade" id="modalDireccion" tabindex="-1"
              aria-labelledby="modalDireccionLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -131,7 +131,7 @@
                             <!-- Calle -->
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                    <input type="text" class="form-control" id="intpCalle" placeholder="Calle">
                                     <label for="Calle">Calle</label>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                             <!-- Número Exterior -->
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="NumeroExterior" placeholder="No. Exterior">
+                                    <input type="text" class="form-control" id="intpNumeroExterior" placeholder="No. Exterior">
                                     <label for="NumeroExterior">Número Exterior</label>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                             <!-- Número Interior -->
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="NumeroInterior" placeholder="No. Interior">
+                                    <input type="text" class="form-control" id="intpNumeroInterior" placeholder="No. Interior">
                                     <label for="NumeroInterior">Número Interior</label>
                                 </div>
                             </div>
@@ -202,8 +202,8 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalUsuario" tabindex="-1"
-             aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+        <div  class="modal fade" id="modalUsuario" tabindex="-1"
+              aria-labelledby="modalUsuarioLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-scrollable">
                 <div class="modal-content">
 
@@ -217,116 +217,119 @@
 
                     <!-- Body -->
                     <div class="modal-body">
-                        <div class="row g-3">
+                        <form th:object="${usuario}">
+                            <div class="row g-3">
 
-                            <!-- Nombre -->
-                            <div class="col-md-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="NombreUsuario" placeholder="Nombre">
-                                    <label for="NombreUsuario">Nombre</label>
-                                </div>
-                            </div>
-
-                            <!-- Apellido Paterno -->
-                            <div class="col-md-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="ApellidoPaterno" placeholder="Apellido Paterno">
-                                    <label for="ApellidoPaterno">Apellido Paterno</label>
-                                </div>
-                            </div>
-
-                            <!-- Apellido Materno -->
-                            <div class="col-md-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="ApellidoMaterno" placeholder="Apellido Materno">
-                                    <label for="ApellidoMaterno">Apellido Materno</label>
-                                </div>
-                            </div>
-
-                            <!-- Username -->
-                            <div class="col-md-3">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="Username" placeholder="Username">
-                                    <label for="Username">Username</label>
-                                </div>
-                            </div>
-
-                            <!-- Email -->
-                            <div class="col-md-3">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="Email" placeholder="Email">
-                                    <label for="Email">Email</label>
-                                </div>
-                            </div>
-
-                            <!-- Password -->
-                            <div class="col-md-3">
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" id="Password" placeholder="Password">
-                                    <label for="Password">Password</label>
-                                </div>
-                            </div>
-
-                            <!-- Fecha Nacimiento -->
-                            <div class="col-md-3">
-                                <div class="form-floating">
-                                    <input type="date" class="form-control" id="FechaNacimiento">
-                                    <label for="FechaNacimiento">Fecha Nacimiento</label>
-                                </div>
-                            </div>
-
-                            <!-- Celular -->
-                            <div class="col-md-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="Celular" placeholder="Celular">
-                                    <label for="Celular">Celular</label>
-                                </div>
-                            </div>
-
-                            <!-- Teléfono -->
-                            <div class="col-md-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="Telefono" placeholder="Teléfono">
-                                    <label for="Telefono">Teléfono</label>
-                                </div>
-                            </div>
-
-                            <!-- CURP -->
-                            <div class="col-md-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="Curp" placeholder="CURP">
-                                    <label for="Curp">CURP</label>
-                                </div>
-                            </div>
-
-                            <!-- Rol -->
-                            <div class="col-md-4">
-                                <label for="RolUsuario" class="form-label">Rol</label>
-                                <select class="form-select" id="RolUsuario">
-                                    <option selected>Selecciona un rol</option>
-                                </select>
-                            </div>
-
-                            <!-- Sexo -->
-                            <div class="col-md-4">
-                                <label class="form-label">Sexo</label>
-                                <div class="d-flex gap-4 mt-1">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino">
-                                        <label class="form-check-label" for="sexoMasculino">
-                                            Masculino
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino">
-                                        <label class="form-check-label" for="sexoFemenino">
-                                            Femenino
-                                        </label>
+                                <!-- Nombre -->
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="NombreUsuario" placeholder="Nombre">
+                                        <label for="NombreUsuario">Nombre</label>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
+                                <!-- Apellido Paterno -->
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="ApellidoPaterno" placeholder="Apellido Paterno" >
+                                        <label for="ApellidoPaterno">Apellido Paterno</label>
+                                    </div>
+                                </div>
+
+                                <!-- Apellido Materno -->
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="ApellidoMaterno" placeholder="Apellido Materno">
+                                        <label for="ApellidoMaterno">Apellido Materno</label>
+                                    </div>
+                                </div>
+
+                                <!-- Username -->
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Username" placeholder="Username">
+                                        <label for="Username">Username</label>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="Email" placeholder="Email">
+                                        <label for="Email">Email</label>
+                                    </div>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="Password" placeholder="Password">
+                                        <label for="Password">Password</label>
+                                    </div>
+                                </div>
+
+                                <!-- Fecha Nacimiento -->
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="FechaNacimiento">
+                                        <label for="FechaNacimiento">Fecha Nacimiento</label>
+                                    </div>
+                                </div>
+
+                                <!-- Celular -->
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Celular" placeholder="Celular">
+                                        <label for="Celular">Celular</label>
+                                    </div>
+                                </div>
+
+                                <!-- Teléfono -->
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Telefono" placeholder="Teléfono">
+                                        <label for="Telefono">Teléfono</label>
+                                    </div>
+                                </div>
+
+                                <!-- CURP -->
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Curp" placeholder="CURP">
+                                        <label for="Curp">CURP</label>
+                                    </div>
+                                </div>
+
+                                <!-- Rol -->
+                                <div class="col-md-4">
+                                    <label for="RolUsuario" class="form-label">Rol</label>
+                                    <select class="form-select" id="RolUsuario">
+                                        <option selected>Selecciona un rol</option>
+                                    </select>
+                                </div>
+
+                                <!-- Sexo -->
+                                <div class="col-md-4">
+                                    <label class="form-label">Sexo</label>
+                                    <div class="d-flex gap-4 mt-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino">
+                                            <label class="form-check-label" for="sexoMasculino">
+                                                Masculino
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino">
+                                            <label class="form-check-label" for="sexoFemenino">
+                                                Femenino
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
                     </div>
 
                     <!-- Footer -->
@@ -344,7 +347,30 @@
             </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script>
+            document.getElementById('btnGuardarUsuario')
+                    .addEventListener()
+            
+            function ShowModalDireccionEdit(IdDireccion){
 
+                
+                $.ajax({
+                    url:'/usuario/GetByIdDireccion/'+IdDireccion,
+                    type:'GET',
+                    dataType: 'json',
+                    success: function (result, textStatus, jqXHR) {
+                        console.log(result);
+                        $('#intpCalle').val(result.Object.calle);
+                        $('#intp')
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        
+                    }
+                })
+                
+            }
+        </script>
 
     </body>
 </html>
