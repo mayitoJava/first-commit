@@ -125,8 +125,20 @@ public class UsuarioController {
     public String Detail(@PathVariable("IdUsuario") int IdUsuario, Model model) {
         Result resulto = usuarioDAOImplementation.GetAllByIdUsuarioDireccion(IdUsuario);
         model.addAttribute("usuario", resulto.Objects);
-        return "UsuarioEditar";
+        return "UsuarioEditar"; //retorna vistas
     }
+    
+    //GetALLPaises
+    @GetMapping("/getPaises")
+    @ResponseBody
+    public Result GetAllpises(){
+        
+        Result resultPais = paisDAOImplementation.GetAll();
+        
+        return resultPais; //retorna datos
+    }
+    
+    
 
     @GetMapping("GetEstadoByPais/{IdPais}")
     @ResponseBody
@@ -380,6 +392,9 @@ public class UsuarioController {
     public Result GetByIdDireccion(@PathVariable int IdDireccion){
         
         Result result = direccionJPADAOImplementation.GetById(IdDireccion);
+        Result resultPaises = paisDAOImplementation.GetAll();
+        
+        result.Objects = resultPaises.Objects;
         
         return result;
     }
