@@ -88,5 +88,20 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         }
         return result;
     }
+    
+       @Override
+        public Result GetById(int IdUsuario) {
+        Result result = new Result();
+        
+        usuarioJPA usuarioBD = entityManager.find(usuarioJPA.class,IdUsuario);
+        
+        ModelMapper modelMaperr = new ModelMapper();
+        
+        AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario usuarioML = modelMaperr.map(usuarioBD, AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario.class);
+        
+        result.Object = usuarioML;
+        
+        return result;
+    }
 
 }

@@ -48,7 +48,7 @@ public class Usuario {
     @Pattern(regexp = "^\\d{10}$", message = "Numero telefonico erroneo")
     private String Telefono;
 
-@NotEmpty(message = "Campo requerido")
+    @NotEmpty(message = "Campo requerido")
     @Pattern(regexp = "^[A-Z]{4}\\d{6}[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[A-Z0-9]\\d$", message = "CURP erronea")
     private String Curp;
 

@@ -9,4 +9,6 @@ public interface IUsuarioJPA {
     public Result Add(usuarioJPA usuario);
     
     public Result Update(AVilchis.ProgramacionNCapasNoviembre25.ML.Usuario usuario);
+    
+     public Result GetById(int IdUsuario);
 }

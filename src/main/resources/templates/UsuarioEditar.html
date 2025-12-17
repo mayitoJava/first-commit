@@ -67,7 +67,7 @@
                         <a class="btn btn-primary mb-3 w-100"
                            data-bs-toggle="modal"
                            data-bs-target="#modalUsuario"
-                           >
+                           th:onclick="|ShowModalUsuarioEdit(${usuario.IdUsuario})|">
                             <i class="bi bi-plus-circle"></i> Editar Datos Personales
                         </a>
                     </div>       
@@ -196,8 +196,8 @@
         </div>
 
 
-        <div  class="modal fade" id="modalUsuario" tabindex="-1"
-              aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+        <div class="modal fade" id="modalUsuario" tabindex="-1"
+             aria-labelledby="modalUsuarioLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-scrollable">
                 <div class="modal-content">
 
@@ -211,95 +211,87 @@
 
                     <!-- Body -->
                     <div class="modal-body">
-                        <form th:object="${usuario}">
+                        <form id="formUsuario">
                             <div class="row g-3">
 
                                 <!-- Nombre -->
                                 <div class="col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="NombreUsuario" placeholder="Nombre">
-                                        <label for="NombreUsuario">Nombre</label>
+                                        <input type="text" class="form-control" id="intpNombre">
+                                        <label>Nombre</label>
                                     </div>
                                 </div>
 
                                 <!-- Apellido Paterno -->
                                 <div class="col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="ApellidoPaterno" placeholder="Apellido Paterno" >
-                                        <label for="ApellidoPaterno">Apellido Paterno</label>
+                                        <input type="text" class="form-control" id="intpApellidoPaterno">
+                                        <label>Apellido Paterno</label>
                                     </div>
                                 </div>
 
                                 <!-- Apellido Materno -->
                                 <div class="col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="ApellidoMaterno" placeholder="Apellido Materno">
-                                        <label for="ApellidoMaterno">Apellido Materno</label>
+                                        <input type="text" class="form-control" id="intpApellidoMaterno">
+                                        <label>Apellido Materno</label>
                                     </div>
                                 </div>
 
                                 <!-- Username -->
                                 <div class="col-md-3">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="Username" placeholder="Username">
-                                        <label for="Username">Username</label>
+                                        <input type="text" class="form-control" id="intpUsername">
+                                        <label>Username</label>
                                     </div>
                                 </div>
 
                                 <!-- Email -->
                                 <div class="col-md-3">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="Email" placeholder="Email">
-                                        <label for="Email">Email</label>
+                                        <input type="email" class="form-control" id="intpEmail">
+                                        <label>Email</label>
                                     </div>
                                 </div>
 
                                 <!-- Password -->
                                 <div class="col-md-3">
                                     <div class="form-floating">
-                                        <input type="password" class="form-control" id="Password" placeholder="Password">
-                                        <label for="Password">Password</label>
+                                        <input type="text" class="form-control" id="intpPassword">
+                                        <label>Password</label>
                                     </div>
                                 </div>
 
                                 <!-- Fecha Nacimiento -->
                                 <div class="col-md-3">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" id="FechaNacimiento">
-                                        <label for="FechaNacimiento">Fecha Nacimiento</label>
+                                        <input type="date" class="form-control" id="intpFechaNacimiento">
+                                        <label>Fecha Nacimiento</label>
                                     </div>
                                 </div>
 
                                 <!-- Celular -->
                                 <div class="col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="Celular" placeholder="Celular">
-                                        <label for="Celular">Celular</label>
+                                        <input type="text" class="form-control" id="intpCelular">
+                                        <label>Celular</label>
                                     </div>
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="Telefono" placeholder="Teléfono">
-                                        <label for="Telefono">Teléfono</label>
+                                        <input type="text" class="form-control" id="intpTelefono">
+                                        <label>Teléfono</label>
                                     </div>
                                 </div>
 
                                 <!-- CURP -->
                                 <div class="col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="Curp" placeholder="CURP">
-                                        <label for="Curp">CURP</label>
+                                        <input type="text" class="form-control" id="intpCurp">
+                                        <label>CURP</label>
                                     </div>
-                                </div>
-
-                                <!-- Rol -->
-                                <div class="col-md-4">
-                                    <label for="RolUsuario" class="form-label">Rol</label>
-                                    <select class="form-select" id="RolUsuario">
-                                        <option selected>Selecciona un rol</option>
-                                    </select>
                                 </div>
 
                                 <!-- Sexo -->
@@ -307,32 +299,28 @@
                                     <label class="form-label">Sexo</label>
                                     <div class="d-flex gap-4 mt-1">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino">
-                                            <label class="form-check-label" for="sexoMasculino">
-                                                Masculino
-                                            </label>
+                                            <input class="form-check-input" type="radio"
+                                                   name="sexo" id="sexoMasculino" value="M ">
+                                            <label class="form-check-label">Masculino</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino">
-                                            <label class="form-check-label" for="sexoFemenino">
-                                                Femenino
-                                            </label>
+                                            <input class="form-check-input" type="radio"
+                                                   name="sexo" id="sexoFemenino" value="F ">
+                                            <label class="form-check-label">Femenino</label>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
                         </form>
-
                     </div>
 
                     <!-- Footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Cerrar
                         </button>
-                        <button type="button" class="btn btn-success">
+                        <button type="button" class="btn btn-success" id="btnGuardarUsuario">
                             Guardar
                         </button>
                     </div>
@@ -422,6 +410,49 @@
 
                 // Mostrar modal
                 $('#modalDireccion').modal('show');
+            }
+
+            function ShowModalUsuarioEdit(IdUsuario) {
+
+                console.log("IdUsuario recibido:", IdUsuario);
+
+                $.ajax({
+                    url: '/usuario/GetByIdUsuario/' + IdUsuario,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (result) {
+
+                        console.log("Usuario leído:", result);
+
+                        let u = result.Object;
+
+                        $('#intpUsername').val(u.username);
+                        $('#intpNombre').val(u.nombre);
+                        $('#intpApellidoPaterno').val(u.apellidoPaterno);
+                        $('#intpApellidoMaterno').val(u.apellidoMaterno);
+                        $('#intpEmail').val(u.email);
+                        $('#intpPassword').val(u.password);
+                        $('#intpCelular').val(u.celular);
+                        $('#intpTelefono').val(u.telefono);
+                        $('#intpCurp').val(u.curp);
+
+                        // ===== FECHA =====
+                        if (u.fechaNacimiento) {
+                            let fecha = new Date(u.fechaNacimiento);
+                            $('#intpFechaNacimiento').val(fecha.toISOString().split('T')[0]);
+                        }
+
+                        // ===== SEXO =====
+                        $(`input[name="sexo"][value="${u.sexo}"]`)
+                                .prop('checked', true);
+
+                        // Mostrar modal
+                        $('#modalUsuario').modal('show');
+                    },
+                    error: function (err) {
+                        console.error("Error al cargar usuario", err);
+                    }
+                });
             }
 
         </script>

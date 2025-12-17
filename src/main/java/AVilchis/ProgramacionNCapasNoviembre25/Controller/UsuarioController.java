@@ -138,8 +138,6 @@ public class UsuarioController {
         return resultPais; //retorna datos
     }
     
-    
-
     @GetMapping("GetEstadoByPais/{IdPais}")
     @ResponseBody
     public Result GetEstadoByPais(@PathVariable("IdPais") int IdPais) {
@@ -395,6 +393,15 @@ public class UsuarioController {
         Result resultPaises = paisDAOImplementation.GetAll();
         
         result.Objects = resultPaises.Objects;
+        
+        return result;
+    }
+    
+    @GetMapping("/GetByIdUsuario/{IdUsuario}")
+    @ResponseBody
+    public Result GetByIdUsuario(@PathVariable int IdUsuario){
+        
+        Result result = usuarioJPADAOImplementation.GetById(IdUsuario);
         
         return result;
     }
