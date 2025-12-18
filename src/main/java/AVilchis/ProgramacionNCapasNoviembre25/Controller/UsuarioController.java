@@ -127,6 +127,7 @@ public class UsuarioController {
     @GetMapping("detail/{IdUsuario}")
     public String Detail(@PathVariable("IdUsuario") int IdUsuario, Model model) {
         Result resulto = usuarioDAOImplementation.GetAllByIdUsuarioDireccion(IdUsuario);
+        model.addAttribute("Direccion", new Direccion());
         model.addAttribute("usuario", resulto.Objects);
         return "UsuarioEditar"; //retorna vistas
     }
@@ -279,15 +280,19 @@ public class UsuarioController {
     // Guardar o actualizar dirección (JSON)
     @PostMapping("/GuardarDireccion")
     @ResponseBody
-    public Map<String, Object> guardarDireccion(@RequestBody Direccion direccion) {
+    public Result guardarDireccion(@ModelAttribute Direccion direccion) {
         Map<String, Object> response = new HashMap<>();
-        Result result;
+        Result result = new Result();
+        System.out.println(direccion.getIdDireccion());
+        System.out.println(direccion.getCalle());
 
         if (direccion.getIdDireccion() == 0) {
             // Crear nueva dirección
 //            result = direccionJPADAOImplementation.Add(direccion);
+            System.out.println("Debugg 0");
         } else {
             // Actualizar dirección existente
+            System.out.println("debug 1");
             result = direccionJPADAOImplementation.Update(direccion);
         }
 
@@ -298,7 +303,7 @@ public class UsuarioController {
 //            response.put("success", false);
 //            response.put("message", result.ErrorMessage);
 //        }
-        return response;
+        return result;
     }
 
     @GetMapping("CargaMasiva")
