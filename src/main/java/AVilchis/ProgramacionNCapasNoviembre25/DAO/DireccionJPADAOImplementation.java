@@ -39,8 +39,9 @@ public class DireccionJPADAOImplementation implements IDireccionJPA {
 
             if (direccionDb != null) {
                 ModelMapper modelMapper = new ModelMapper();
-                direccionJPA direccionJPA = modelMapper.map(direccion, direccionJPA.class);
-                entityManager.merge(direccionJPA);
+                // Cambié el nombre de la variable para evitar conflicto con la clase
+                direccionJPA direccionToUpdate = modelMapper.map(direccion, direccionJPA.class);
+                entityManager.merge(direccionToUpdate);
             }
 
             result.Correct = true;

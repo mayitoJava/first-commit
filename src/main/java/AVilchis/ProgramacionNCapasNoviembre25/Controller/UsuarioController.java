@@ -72,7 +72,7 @@ public class UsuarioController {
 
     @Autowired
     private DireccionDAOImplementation direccionDAOImplementation;
-    
+
     @Autowired
     private DireccionJPADAOImplementation direccionJPADAOImplementation;
 
@@ -108,7 +108,7 @@ public class UsuarioController {
     }
 
     @PostMapping("add")
-    public String Add(@Valid @ModelAttribute("usuario") Usuario usuario,BindingResult bindingResult,Model model) {
+    public String Add(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("usuario", usuario);
             return "UsuarioForm";
@@ -127,17 +127,17 @@ public class UsuarioController {
         model.addAttribute("usuario", resulto.Objects);
         return "UsuarioEditar"; //retorna vistas
     }
-    
+
     //GetALLPaises
     @GetMapping("/getPaises")
     @ResponseBody
-    public Result GetAllpises(){
-        
+    public Result GetAllpises() {
+
         Result resultPais = paisDAOImplementation.GetAll();
-        
+
         return resultPais; //retorna datos
     }
-    
+
     @GetMapping("GetEstadoByPais/{IdPais}")
     @ResponseBody
     public Result GetEstadoByPais(@PathVariable("IdPais") int IdPais) {
@@ -222,10 +222,22 @@ public class UsuarioController {
         } else if (usuario.Direcciones.get(0).getIdDireccion() == -1) {
             //Actualizar usuario
             Result resultupdate = usuarioJPADAOImplementation.Update(usuario);
+            if (resultupdate.Correct) {
+                System.out.println("Actualización exitosa");
+            } else {
+                System.out.println("Error: " + resultupdate.ErrorMessage);
+            }
         } else if (usuario.Direcciones.get(0).getIdDireccion() == 0) {
             //Añadir Direccion
         } else {
             //Actualizr Direccion
+            Result resultupdatedireccion = direccionJPADAOImplementation.Update(usuario.Direcciones.get(0));
+            if (resultupdatedireccion.Correct) {
+                System.out.println("Actualización exitosa");
+            } else {
+                System.out.println("Error: " + resultupdatedireccion.ErrorMessage);
+            }
+
         }
         return "redirect:/usuario";
     }
@@ -384,25 +396,25 @@ public class UsuarioController {
 
         return "UsuarioIndex";
     }
-    
+
     @GetMapping("/GetByIdDireccion/{IdDireccion}")
     @ResponseBody
-    public Result GetByIdDireccion(@PathVariable int IdDireccion){
-        
+    public Result GetByIdDireccion(@PathVariable int IdDireccion) {
+
         Result result = direccionJPADAOImplementation.GetById(IdDireccion);
         Result resultPaises = paisDAOImplementation.GetAll();
-        
+
         result.Objects = resultPaises.Objects;
-        
+
         return result;
     }
-    
+
     @GetMapping("/GetByIdUsuario/{IdUsuario}")
     @ResponseBody
-    public Result GetByIdUsuario(@PathVariable int IdUsuario){
-        
+    public Result GetByIdUsuario(@PathVariable int IdUsuario) {
+
         Result result = usuarioJPADAOImplementation.GetById(IdUsuario);
-        
+
         return result;
     }
 
