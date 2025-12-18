@@ -91,7 +91,13 @@
                                  th:each="direccion : ${usuario.direcciones}">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <p><strong>Calle:</strong> <span th:text="${direccion.calle}"></span></p>                              
+                                        <p><strong>Calle:</strong> <span th:text="${direccion.calle}"></span></p>
+                                        <p><strong>Número Exterior:</strong> <span th:text="${direccion.numeroExterior}"></span></p>
+                                        <p><strong>Número Interior:</strong> <span th:text="${direccion.numeroInterior}"></span></p>
+                                        <p><strong>Colonia:</strong> <span th:text="${direccion.colonia.nombre}"></span></p>
+                                        <p><strong>Municipio:</strong> <span th:text="${direccion.colonia.municipio.nombre}"></span></p>
+                                        <p><strong>Estado:</strong> <span th:text="${direccion.colonia.municipio.estado.nombre}"></span></p>
+                                        <p><strong>País:</strong> <span th:text="${direccion.colonia.municipio.estado.pais.nombre}"></span></p>                             
                                     </div>
                                     <div>
                                         <a class="btn btn-warning btn-sm me-2"
@@ -111,6 +117,7 @@
                 </div>
             </div>
         </div>
+
         <div class="modal fade" id="modalDireccion" tabindex="-1"
              aria-labelledby="modalDireccionLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -124,6 +131,8 @@
 
                     <!-- Body -->
                     <div class="modal-body">
+                        <input type="hidden" id="hiddenIdDireccion" value="0" />
+
                         <div class="row g-3">
 
                             <!-- Calle -->
@@ -208,10 +217,10 @@
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
                     <!-- Body -->
                     <div class="modal-body">
                         <form id="formUsuario">
+                            <input type="hidden" id="intpIdUsuario">
                             <div class="row g-3">
 
                                 <!-- Nombre -->
@@ -299,17 +308,16 @@
                                     <label class="form-label">Sexo</label>
                                     <div class="d-flex gap-4 mt-1">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio"
-                                                   name="sexo" id="sexoMasculino" value="M ">
+                                            <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino" value="M ">
                                             <label class="form-check-label">Masculino</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio"
-                                                   name="sexo" id="sexoFemenino" value="F ">
+                                            <input class="form-check-input" type="radio" name="sexo" id="sexoFemenino" value="F ">
                                             <label class="form-check-label">Femenino</label>
                                         </div>
                                     </div>
                                 </div>
+
 
                             </div>
                         </form>
@@ -333,25 +341,21 @@
         <script>
             function ShowModalDireccionEdit(IdDireccion) {
                 console.log("IdDireccion recibido:", IdDireccion);
-
                 $.ajax({
                     url: '/usuario/GetByIdDireccion/' + IdDireccion,
                     type: 'GET',
                     dataType: 'json',
                     success: function (result) {
                         console.log("RESULTADO COMPLETO:", result);
-
                         // Llenar campos básicos
                         $('#intpCalle').val(result.Object.calle);
                         $('#intpNumeroExterior').val(result.Object.numeroExterior);
                         $('#intpNumeroInterior').val(result.Object.numeroInterior);
-
                         // IDs de ubicación
                         const idPais = result.Object.Colonia.municipio.Estado.Pais.idPais;
                         const idEstado = result.Object.Colonia.municipio.Estado.idEstado;
                         const idMunicipio = result.Object.Colonia.municipio.idMunicipio;
                         const idColonia = result.Object.Colonia.idColonia;
-
                         // Función para llenar selects correctamente
                         function llenarSelect(url, selectId, selectedId, placeholder) {
                             $.ajax({
@@ -361,7 +365,6 @@
                                 success: function (data) {
                                     const $select = $(selectId);
                                     $select.empty().append(`<option value="">${placeholder}</option>`);
-
                                     // Llenar solo con el ID correcto según el tipo de select
                                     $.each(data.Objects, function (i, item) {
                                         let value;
@@ -373,10 +376,8 @@
                                             value = item.idMunicipio;
                                         else if (item.idColonia)
                                             value = item.idColonia;
-
                                         $select.append(`<option value="${value}">${item.nombre}</option>`);
                                     });
-
                                     if (selectedId)
                                         $select.val(selectedId).trigger('change');
                                 }
@@ -385,17 +386,14 @@
 
                         // Llenar país
                         llenarSelect('/usuario/getPaises', '#ddlPais', idPais, 'Selecciona un país');
-
                         // Cuando cambie país → llenar estados
                         $('#ddlPais').off('change').on('change', function () {
                             llenarSelect('/usuario/GetEstadoByPais/' + $(this).val(), '#ddlEstado', idEstado, 'Selecciona un estado');
                         });
-
                         // Cuando cambie estado → llenar municipios
                         $('#ddlEstado').off('change').on('change', function () {
                             llenarSelect('/usuario/GetMunicipioByEstado/' + $(this).val(), '#ddlMunicipio', idMunicipio, 'Selecciona un municipio');
                         });
-
                         // Cuando cambie municipio → llenar colonias
                         $('#ddlMunicipio').off('change').on('change', function () {
                             llenarSelect('/usuario/GetColoniaByMunicipio/' + $(this).val(), '#ddlColonia', idColonia, 'Selecciona una colonia');
@@ -407,10 +405,56 @@
                         console.error("Response:", jqXHR.responseText);
                     }
                 });
-
                 // Mostrar modal
                 $('#modalDireccion').modal('show');
             }
+
+            // Función para guardar o actualizar la dirección
+            $('#btnGuardarDireccion').on('click', function () {
+
+                // Obtener los datos del formulario
+                const direccionData = {
+                    IdDireccion: $('#hiddenIdDireccion').val() || 0, // si no hay Id, será nueva
+                    Calle: $('#intpCalle').val(),
+                    NumeroExterior: $('#intpNumeroExterior').val(),
+                    NumeroInterior: $('#intpNumeroInterior').val(),
+                    IdPais: $('#ddlPais').val(),
+                    IdEstado: $('#ddlEstado').val(),
+                    IdMunicipio: $('#ddlMunicipio').val(),
+                    IdColonia: $('#ddlColonia').val()
+                };
+
+                // Validación básica
+                if (!direccionData.Calle || !direccionData.NumeroExterior || !direccionData.IdPais || !direccionData.IdEstado || !direccionData.IdMunicipio || !direccionData.IdColonia) {
+                    alert("Por favor completa todos los campos obligatorios.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/usuario/GuardarDireccion', // Ajusta a tu endpoint
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(direccionData),
+                    success: function (result) {
+                        if (result.success) {
+                            alert("Dirección guardada correctamente.");
+                            $('#modalDireccion').modal('hide');
+                            // Opcional: recargar tabla/listado de direcciones
+                            // cargarDirecciones();
+                        } else {
+                            alert("Error al guardar la dirección: " + result.message);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error("Status:", textStatus);
+                        console.error("Error:", errorThrown);
+                        console.error("Response:", jqXHR.responseText);
+                        alert("Ocurrió un error al guardar la dirección.");
+                    }
+                });
+            });
+
 
             function ShowModalUsuarioEdit(IdUsuario) {
 
@@ -423,9 +467,10 @@
                     success: function (result) {
 
                         console.log("Usuario leído:", result);
-
                         let u = result.Object;
 
+                        // Llenar campos
+                        $('#intpIdUsuario').val(u.idUsuario);
                         $('#intpUsername').val(u.username);
                         $('#intpNombre').val(u.nombre);
                         $('#intpApellidoPaterno').val(u.apellidoPaterno);
@@ -436,15 +481,15 @@
                         $('#intpTelefono').val(u.telefono);
                         $('#intpCurp').val(u.curp);
 
-                        // ===== FECHA =====
+                        // Fecha
                         if (u.fechaNacimiento) {
                             let fecha = new Date(u.fechaNacimiento);
                             $('#intpFechaNacimiento').val(fecha.toISOString().split('T')[0]);
                         }
 
-                        // ===== SEXO =====
-                        $(`input[name="sexo"][value="${u.sexo}"]`)
-                                .prop('checked', true);
+                        // Sexo
+                        $('input[name="sexo"]').prop('checked', false); // limpiar selección
+                        $(`input[name="sexo"][value="${u.sexo}"]`).prop('checked', true);
 
                         // Mostrar modal
                         $('#modalUsuario').modal('show');
@@ -454,6 +499,43 @@
                     }
                 });
             }
+
+            $('#btnGuardarUsuario').click(function () {
+
+                let usuario = {
+                    idUsuario: parseInt($('#intpIdUsuario').val()), // Asegurarse que sea número
+                    username: $('#intpUsername').val(),
+                    nombre: $('#intpNombre').val(),
+                    apellidoPaterno: $('#intpApellidoPaterno').val(),
+                    apellidoMaterno: $('#intpApellidoMaterno').val(),
+                    email: $('#intpEmail').val(),
+                    password: $('#intpPassword').val(),
+                    celular: $('#intpCelular').val(),
+                    telefono: $('#intpTelefono').val(),
+                    curp: $('#intpCurp').val(),
+                    fechaNacimiento: $('#intpFechaNacimiento').val(),
+                    sexo: $('input[name="sexo"]:checked').val()
+                };
+
+                console.log("Usuario a guardar:", usuario);
+
+                $.ajax({
+                    url: '/formEditable',
+                    type: 'POST',
+                    data: usuario, // enviar como form-urlencoded (no JSON)
+                    success: function (response) {
+                        console.log("Usuario actualizado con éxito:", response);
+                        $('#modalUsuario').modal('hide');
+                        location.reload(); // refresca la tabla
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error al guardar usuario:", status, error);
+                        console.log("Respuesta completa del servidor:", xhr.responseText);
+                    }
+                });
+
+            });
+
 
         </script>
 
