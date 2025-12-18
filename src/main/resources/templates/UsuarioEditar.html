@@ -409,12 +409,9 @@
                 $('#modalDireccion').modal('show');
             }
 
-            // Función para guardar o actualizar la dirección
             $('#btnGuardarDireccion').on('click', function () {
-
-                // Obtener los datos del formulario
                 const direccionData = {
-                    IdDireccion: $('#hiddenIdDireccion').val() || 0, // si no hay Id, será nueva
+                    IdDireccion: parseInt($('#hiddenIdDireccion').val() || 0),
                     Calle: $('#intpCalle').val(),
                     NumeroExterior: $('#intpNumeroExterior').val(),
                     NumeroInterior: $('#intpNumeroInterior').val(),
@@ -431,30 +428,25 @@
                 }
 
                 $.ajax({
-                    url: '/usuario/GuardarDireccion', // Ajusta a tu endpoint
+                    url: '/usuario/GuardarDireccion',
                     type: 'POST',
-                    dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify(direccionData),
                     success: function (result) {
                         if (result.success) {
-                            alert("Dirección guardada correctamente.");
+                            alert(result.message);
                             $('#modalDireccion').modal('hide');
-                            // Opcional: recargar tabla/listado de direcciones
-                            // cargarDirecciones();
+                            location.reload(); // o recargar solo el listado de direcciones
                         } else {
-                            alert("Error al guardar la dirección: " + result.message);
+                            alert("Error: " + result.message);
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error("Status:", textStatus);
-                        console.error("Error:", errorThrown);
-                        console.error("Response:", jqXHR.responseText);
-                        alert("Ocurrió un error al guardar la dirección.");
+                    error: function (xhr) {
+                        console.error("Error al guardar dirección:", xhr.responseText);
+                        alert("Ocurrió un error al guardar la dirección");
                     }
                 });
             });
-
 
             function ShowModalUsuarioEdit(IdUsuario) {
 
@@ -501,9 +493,8 @@
             }
 
             $('#btnGuardarUsuario').click(function () {
-
                 let usuario = {
-                    idUsuario: parseInt($('#intpIdUsuario').val()), // Asegurarse que sea número
+                    idUsuario: parseInt($('#intpIdUsuario').val() || 0),
                     username: $('#intpUsername').val(),
                     nombre: $('#intpNombre').val(),
                     apellidoPaterno: $('#intpApellidoPaterno').val(),
@@ -517,23 +508,20 @@
                     sexo: $('input[name="sexo"]:checked').val()
                 };
 
-                console.log("Usuario a guardar:", usuario);
-
                 $.ajax({
-                    url: '/formEditable',
+                    url: '/usuario/formEditable',
                     type: 'POST',
-                    data: usuario, // enviar como form-urlencoded (no JSON)
+                    data: usuario, // form-urlencoded
                     success: function (response) {
-                        console.log("Usuario actualizado con éxito:", response);
                         $('#modalUsuario').modal('hide');
-                        location.reload(); // refresca la tabla
+                        alert("Usuario guardado correctamente");
+                        location.reload();
                     },
-                    error: function (xhr, status, error) {
-                        console.error("Error al guardar usuario:", status, error);
-                        console.log("Respuesta completa del servidor:", xhr.responseText);
+                    error: function (xhr) {
+                        console.error("Error al guardar usuario:", xhr.responseText);
+                        alert("Error al guardar usuario");
                     }
                 });
-
             });
 
 

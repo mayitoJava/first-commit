@@ -28,7 +28,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -43,6 +45,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -212,34 +215,90 @@ public class UsuarioController {
         }
     }
 
+//    @PostMapping("/formEditable")
+//    public String Form(@ModelAttribute Usuario usuario) {
+//        if (usuario.getIdUsuario() == 0) {
+//            // Añadir Usuario
+//            ModelMapper modelMapper = new ModelMapper();
+//            AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA usuarioJPA = modelMapper.map(usuario, AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA.class);
+//            Result resultadd = usuarioJPADAOImplementation.Add(usuarioJPA);
+//        } else if (usuario.Direcciones.get(0).getIdDireccion() == -1) {
+//            //Actualizar usuario
+//            Result resultupdate = usuarioJPADAOImplementation.Update(usuario);
+//            if (resultupdate.Correct) {
+//                System.out.println("Actualización exitosa");
+//            } else {
+//                System.out.println("Error: " + resultupdate.ErrorMessage);
+//            }
+//        } else if (usuario.Direcciones.get(0).getIdDireccion() == 0) {
+//            //Añadir Direccion
+//        } else {
+//            //Actualizr Direccion
+//            Result resultupdatedireccion = direccionJPADAOImplementation.Update(usuario.Direcciones.get(0));
+//            if (resultupdatedireccion.Correct) {
+//                System.out.println("Actualización exitosa");
+//            } else {
+//                System.out.println("Error: " + resultupdatedireccion.ErrorMessage);
+//            }
+//
+//        }
+//        return "redirect:/usuario";
+//    }
+    // Guardar o actualizar usuario
     @PostMapping("/formEditable")
-    public String Form(@ModelAttribute Usuario usuario) {
+    public String guardarUsuario(@ModelAttribute Usuario usuario) {
+        Result result;
+
         if (usuario.getIdUsuario() == 0) {
-            // Añadir Usuario
+            // Crear nuevo usuario
             ModelMapper modelMapper = new ModelMapper();
-            AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA usuarioJPA = modelMapper.map(usuario, AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA.class);
-            Result resultadd = usuarioJPADAOImplementation.Add(usuarioJPA);
-        } else if (usuario.Direcciones.get(0).getIdDireccion() == -1) {
-            //Actualizar usuario
-            Result resultupdate = usuarioJPADAOImplementation.Update(usuario);
-            if (resultupdate.Correct) {
-                System.out.println("Actualización exitosa");
+            AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA usuarioJPA
+                    = modelMapper.map(usuario, AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA.class);
+            result = usuarioJPADAOImplementation.Add(usuarioJPA);
+
+            if (result.Correct) {
+                System.out.println("Usuario agregado correctamente");
             } else {
-                System.out.println("Error: " + resultupdate.ErrorMessage);
-            }
-        } else if (usuario.Direcciones.get(0).getIdDireccion() == 0) {
-            //Añadir Direccion
-        } else {
-            //Actualizr Direccion
-            Result resultupdatedireccion = direccionJPADAOImplementation.Update(usuario.Direcciones.get(0));
-            if (resultupdatedireccion.Correct) {
-                System.out.println("Actualización exitosa");
-            } else {
-                System.out.println("Error: " + resultupdatedireccion.ErrorMessage);
+                System.out.println("Error al agregar usuario: " + result.ErrorMessage);
             }
 
+        } else {
+            // Actualizar usuario existente
+            result = usuarioJPADAOImplementation.Update(usuario);
+
+            if (result.Correct) {
+                System.out.println("Usuario actualizado correctamente");
+            } else {
+                System.out.println("Error al actualizar usuario: " + result.ErrorMessage);
+            }
         }
-        return "redirect:/usuario";
+
+        return "redirect:/usuario"; // Redirige al listado de usuarios
+    }
+
+    // Guardar o actualizar dirección (JSON)
+    @PostMapping("/GuardarDireccion")
+    @ResponseBody
+    public Map<String, Object> guardarDireccion(@RequestBody Direccion direccion) {
+        Map<String, Object> response = new HashMap<>();
+        Result result;
+
+        if (direccion.getIdDireccion() == 0) {
+            // Crear nueva dirección
+//            result = direccionJPADAOImplementation.Add(direccion);
+        } else {
+            // Actualizar dirección existente
+            result = direccionJPADAOImplementation.Update(direccion);
+        }
+
+//        if (result.Correct) {
+//            response.put("success", true);
+//            response.put("message", "Dirección guardada correctamente");
+//        } else {
+//            response.put("success", false);
+//            response.put("message", result.ErrorMessage);
+//        }
+        return response;
     }
 
     @GetMapping("CargaMasiva")
