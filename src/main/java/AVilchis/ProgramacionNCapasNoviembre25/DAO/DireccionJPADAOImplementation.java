@@ -1,4 +1,3 @@
-
 package AVilchis.ProgramacionNCapasNoviembre25.DAO;
 
 import AVilchis.ProgramacionNCapasNoviembre25.JPA.direccionJPA;
@@ -7,28 +6,51 @@ import jakarta.persistence.EntityManager;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class DireccionJPADAOImplementation implements IDireccionJPA{
-    
+public class DireccionJPADAOImplementation implements IDireccionJPA {
+
     @Autowired
     private EntityManager entityManager;
 
     @Override
     public Result GetById(int IdDireccion) {
         Result result = new Result();
-        
-        direccionJPA direccionBD = entityManager.find(direccionJPA.class,IdDireccion);
-        
+
+        direccionJPA direccionBD = entityManager.find(direccionJPA.class, IdDireccion);
+
         ModelMapper modelMaperr = new ModelMapper();
-        
+
         AVilchis.ProgramacionNCapasNoviembre25.ML.Direccion direccionML = modelMaperr.map(direccionBD, AVilchis.ProgramacionNCapasNoviembre25.ML.Direccion.class);
-        
+
         result.Object = direccionML;
-        
+
         return result;
     }
 
-    
-    
+    @Transactional
+    @Override
+    public Result Update(AVilchis.ProgramacionNCapasNoviembre25.ML.Direccion direccion) {
+        Result result = new Result();
+        try {
+            // Verificar si existe en la base de datos
+            direccionJPA direccionDb = entityManager.find(direccionJPA.class, direccion.getIdDireccion());
+
+            if (direccionDb != null) {
+                ModelMapper modelMapper = new ModelMapper();
+                direccionJPA direccionJPA = modelMapper.map(direccion, direccionJPA.class);
+                entityManager.merge(direccionJPA);
+            }
+
+            result.Correct = true;
+
+        } catch (Exception ex) {
+            result.Correct = false;
+            result.ErrorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+        return result;
+    }
+
 }
