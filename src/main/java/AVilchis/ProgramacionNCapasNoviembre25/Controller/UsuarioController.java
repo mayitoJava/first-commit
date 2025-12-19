@@ -245,6 +245,7 @@ public class UsuarioController {
 //        }
 //        return "redirect:/usuario";
 //    }
+    
     // Guardar o actualizar usuario
     @PostMapping("/formEditable")
     public String guardarUsuario(@ModelAttribute Usuario usuario) {
