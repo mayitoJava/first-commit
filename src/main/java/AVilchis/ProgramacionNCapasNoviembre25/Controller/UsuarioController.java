@@ -45,7 +45,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -245,7 +244,6 @@ public class UsuarioController {
 //        }
 //        return "redirect:/usuario";
 //    }
-    
     // Guardar o actualizar usuario
     @PostMapping("/formEditable")
     public String guardarUsuario(@ModelAttribute Usuario usuario) {
@@ -288,8 +286,8 @@ public class UsuarioController {
         System.out.println(direccion.getCalle());
 
         if (direccion.getIdDireccion() == 0) {
-            // Crear nueva dirección
-//            result = direccionJPADAOImplementation.Add(direccion);
+            //Crear nueva dirección
+            //result = direccionJPADAOImplementation.Add(direccion);
             System.out.println("Debugg 0");
         } else {
             // Actualizar dirección existente
@@ -297,13 +295,13 @@ public class UsuarioController {
             result = direccionJPADAOImplementation.Update(direccion);
         }
 
-//        if (result.Correct) {
-//            response.put("success", true);
-//            response.put("message", "Dirección guardada correctamente");
-//        } else {
-//            response.put("success", false);
-//            response.put("message", result.ErrorMessage);
-//        }
+        if (result.Correct) {
+            response.put("success", true);
+            response.put("message", "Dirección guardada correctamente");
+        } else {
+            response.put("success", false);
+            response.put("message", result.ErrorMessage);
+        }
         return result;
     }
 
