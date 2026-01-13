@@ -9,6 +9,8 @@ import AVilchis.ProgramacionNCapasNoviembre25.DAO.UsuarioDAOIMplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.RolDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.PaisDAOImplementation;
 import AVilchis.ProgramacionNCapasNoviembre25.DAO.UsuarioJPADAOImplementation;
+import AVilchis.ProgramacionNCapasNoviembre25.JPA.direccionJPA;
+import AVilchis.ProgramacionNCapasNoviembre25.JPA.usuarioJPA;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.Direccion;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.ErrorCarga;
 import AVilchis.ProgramacionNCapasNoviembre25.ML.Result;
